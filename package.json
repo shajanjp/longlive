@@ -1,6 +1,6 @@
 {
   "name": "longlive",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -10,5 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "robotjs": "^0.5.1",
+    "yargs": "^12.0.1"
+  }
 }
