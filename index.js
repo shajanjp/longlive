@@ -15,7 +15,7 @@ if (argv.deploy) {
   let inMinutes;
   robot.setMouseDelay(2);
 
-  function doThisThing () {
+  function doThisThing() {
   let mouse = robot.getMousePos();
     curTime = new Date();
     inMinutes = makeMinutes(curTime.getHours(), curTime.getMinutes());
@@ -29,4 +29,15 @@ if (argv.deploy) {
   }
 
   doThisThing();
+}
+
+function beActive(){
+  let mouse = robot.getMousePos();
+  robot.moveMouse(mouse.x + 1, mouse.y + 1);
+  console.log('.');
+  setTimeout(beActive, 60000);
+}
+
+if (argv.force) {
+  beActive();
 }
