@@ -1,0 +1,44 @@
+{
+  "_from": "longlive",
+  "_id": "longlive@1.0.1",
+  "_inBundle": false,
+  "_integrity": "sha1-kp6gMXxptKjdRmXsCR4LbIMuQck=",
+  "_location": "/longlive",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "longlive",
+    "name": "longlive",
+    "escapedName": "longlive",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/longlive/-/longlive-1.0.1.tgz",
+  "_shasum": "929ea0317c69b4a8dd4665ec091e0b6c832e41c9",
+  "_spec": "longlive",
+  "_where": "/home/dev281/Documents/sandbox",
+  "author": "",
+  "bin": {
+    "longlive": "./index.js"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "robotjs": "^0.4.7",
+    "yargs": "^11.0.0"
+  },
+  "deprecated": false,
+  "description": "",
+  "license": "ISC",
+  "main": "index.js",
+  "name": "longlive",
+  "scripts": {
+    "start": "node ./index.js --deploy"
+  },
+  "version": "1.0.1"
+}
