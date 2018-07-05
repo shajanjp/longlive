@@ -1,7 +1,7 @@
 {
   "name": "longlive",
-  "version": "1.0.3",
-  "description": "",
+  "version": "1.0.4",
+  "description": "Screen refresh",
   "main": "index.js",
   "bin": {
     "longlive": "./index.js"
