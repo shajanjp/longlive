@@ -5,31 +5,7 @@ const fs = require('fs');
 const https = require('https');
 const HOME_PATH = require('os').homedir();
 
-function makeMinutes(hours, minutes) {
-  let totalMinutes = minutes;
-  totalMinutes += hours * 60;
-  return totalMinutes;
-}
-
-function beActive() {
-  let mouse = robot.getMousePos();
-  robot.moveMouse(mouse.x + 1, mouse.y + 1);
-  setTimeout(beActive, 60000);
-}
-
-function doItLikeDeskTime() {
-  let mouse = robot.getMousePos();
-  robot.moveMouse(mouse.x + 1, mouse.y + 1);
-  updateDesktimeData()
-  .then((updatedDesktimeData) => {
-    if (updatedDesktimeData.atWorkTime < 33000) {
-      780;
-      setTimeout(doItLikeDeskTime, 60000);
-    } else {
-return;
-}
-  });
-}
+robot.setMouseDelay(2);
 
 function getdesktimeUrl(apiKey) {
   return `https://desktime.com/api/v2/json/employee?apiKey=${apiKey}`;
@@ -77,20 +53,47 @@ function updateDesktimeData() {
   });
 }
 
-function routineWork() {
-  let curTime;
-  let inMinutes;
+function timeInMinutes() {
+  let now = new Date();
+  let inMinutes = (now.getHours() * 60) + now.getMinutes();
+  return new Promise((resolve, reject) => {
+    resolve(inMinutes);
+  });
+}
 
-  robot.setMouseDelay(2);
+function doItLikeDeskTime() {
   let mouse = robot.getMousePos();
-  curTime = new Date();
-  inMinutes = makeMinutes(curTime.getHours(), curTime.getMinutes());
-  if ((inMinutes > 510 && inMinutes < 790) || (inMinutes > 830 && inMinutes < 1085)) {
-    robot.moveMouse(mouse.x + 1, mouse.y + 1);
-  } else {
-    console.log('-');
-  }
-  setTimeout(routineWork, 60000);
+  robot.moveMouse(mouse.x + 1, mouse.y + 1);
+  updateDesktimeData()
+  .then((updatedDesktimeData) => {
+    timeInMinutes()
+    .then((inMinutes) => {
+    if (updatedDesktimeData.atWorkTime < 33000 && ((inMinutes > 510 && inMinutes < 790) || (inMinutes > 830 && inMinutes < 1230))) {
+      setTimeout(doItLikeDeskTime, 60000);
+    } else {
+      return;
+    }
+    });
+  });
+}
+
+function beActive() {
+  let mouse = robot.getMousePos();
+  robot.moveMouse(mouse.x + 1, mouse.y + 1);
+  setTimeout(beActive, 60000);
+}
+
+function routineWork() {
+  let mouse = robot.getMousePos();
+  timeInMinutes()
+  .then((inMinutes) => {
+    if ((inMinutes > 510 && inMinutes < 790) || (inMinutes > 830 && inMinutes < 1230)) {
+      robot.moveMouse(mouse.x + 1, mouse.y + 1);
+      setTimeout(routineWork, 60000);
+    } else {
+      console.log('-');
+    }
+  });
 }
 
 if (argv.deploy) {

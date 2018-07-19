@@ -1,7 +1,7 @@
 {
   "name": "longlive",
-  "version": "1.0.4",
-  "description": "Screen refresh",
+  "version": "1.0.5",
+  "description": "Intelligent anti-idle engine.",
   "main": "index.js",
   "bin": {
     "longlive": "./index.js"
