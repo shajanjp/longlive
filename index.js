@@ -7,6 +7,11 @@ const HOME_PATH = require('os').homedir();
 
 robot.setMouseDelay(2);
 
+function getUp(){
+  let mouse = robot.getMousePos();
+  robot.moveMouse(mouse.x + 1, mouse.y + 1);
+}
+
 function getdesktimeUrl(apiKey) {
   return `https://desktime.com/api/v2/json/employee?apiKey=${apiKey}`;
 }
@@ -62,13 +67,12 @@ function timeInMinutes() {
 }
 
 function doItLikeDeskTime() {
-  let mouse = robot.getMousePos();
   updateDesktimeData()
   .then((updatedDesktimeData) => {
     timeInMinutes()
     .then((inMinutes) => {
       if (updatedDesktimeData.atWorkTime < 33000 && ((inMinutes > 510 && inMinutes < 790) || (inMinutes > 830 && inMinutes < 1230))) {
-        robot.moveMouse(mouse.x + 1, mouse.y + 1);
+        getUp();
         setTimeout(doItLikeDeskTime, 60000);
       } else {
         setTimeout(doItLikeDeskTime, 60000);
@@ -78,17 +82,15 @@ function doItLikeDeskTime() {
 }
 
 function beActive() {
-  let mouse = robot.getMousePos();
-  robot.moveMouse(mouse.x + 1, mouse.y + 1);
+  getUp();
   setTimeout(beActive, 60000);
 }
 
 function routineWork() {
-  let mouse = robot.getMousePos();
   timeInMinutes()
   .then((inMinutes) => {
     if ((inMinutes > 510 && inMinutes < 790) || (inMinutes > 830 && inMinutes < 1230)) {
-      robot.moveMouse(mouse.x + 1, mouse.y + 1);
+      getUp();
       setTimeout(routineWork, 60000);
     } else {
       setTimeout(routineWork, 60000);

@@ -1,6 +1,6 @@
 {
   "name": "longlive",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Intelligent anti-idle engine.",
   "main": "index.js",
   "bin": {
