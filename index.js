@@ -63,16 +63,16 @@ function timeInMinutes() {
 
 function doItLikeDeskTime() {
   let mouse = robot.getMousePos();
-  robot.moveMouse(mouse.x + 1, mouse.y + 1);
   updateDesktimeData()
   .then((updatedDesktimeData) => {
     timeInMinutes()
     .then((inMinutes) => {
-    if (updatedDesktimeData.atWorkTime < 33000 && ((inMinutes > 510 && inMinutes < 790) || (inMinutes > 830 && inMinutes < 1230))) {
-      setTimeout(doItLikeDeskTime, 60000);
-    } else {
-      return;
-    }
+      if (updatedDesktimeData.atWorkTime < 33000 && ((inMinutes > 510 && inMinutes < 790) || (inMinutes > 830 && inMinutes < 1230))) {
+        robot.moveMouse(mouse.x + 1, mouse.y + 1);
+        setTimeout(doItLikeDeskTime, 60000);
+      } else {
+        setTimeout(doItLikeDeskTime, 60000);
+      }
     });
   });
 }
@@ -91,7 +91,7 @@ function routineWork() {
       robot.moveMouse(mouse.x + 1, mouse.y + 1);
       setTimeout(routineWork, 60000);
     } else {
-      console.log('-');
+      setTimeout(routineWork, 60000);
     }
   });
 }
