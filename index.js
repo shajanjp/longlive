@@ -4,10 +4,38 @@ const argv = require('yargs').argv;
 const fs = require('fs');
 const https = require('https');
 const HOME_PATH = require('os').homedir();
+const exec = require('child_process').exec;
+
+let workTimeLimit = 33120;
+let deskTimeLimit = 29160;
 
 robot.setMouseDelay(2);
 
-function getUp(){
+function isOkToLeave(desktimeData) {
+  if (desktimeData.atWorkTime > workTimeLimit && desktimeData.desktimeTime > deskTimeLimit) {
+      return true;
+    } else {
+      return false;
+    }
+}
+
+function isWorkTime(inMinutes) {
+  return ((inMinutes > 510 && inMinutes < 790) || (inMinutes > 830 && inMinutes < 1230));
+}
+
+function execute(command) {
+  return new Promise((resolve, reject) => {
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        reject(stderr);
+      } else {
+        resolve(stdout);
+      }
+    });
+  });
+}
+
+function getUp() {
   let mouse = robot.getMousePos();
   robot.moveMouse(mouse.x + 1, mouse.y + 1);
 }
@@ -53,7 +81,6 @@ function updateDesktimeData() {
     return getRequest(getdesktimeUrl(APIKEY));
   })
   .then((desktimeDataResponse) => {
-    desktimeData = desktimeDataResponse;
     return desktimeDataResponse;
   });
 }
@@ -71,11 +98,19 @@ function doItLikeDeskTime() {
   .then((updatedDesktimeData) => {
     timeInMinutes()
     .then((inMinutes) => {
-      if (updatedDesktimeData.atWorkTime < 33000 && ((inMinutes > 510 && inMinutes < 790) || (inMinutes > 830 && inMinutes < 1230))) {
+      if (!isOkToLeave(updatedDesktimeData) && isWorkTime(inMinutes)) {
         getUp();
-        setTimeout(doItLikeDeskTime, 60000);
+        return setTimeout(doItLikeDeskTime, 60000);
+      } else if (isOkToLeave(updatedDesktimeData)) {
+        if (argv.after) {
+return execute(argv.after);
+} else if (argv.sleep) {
+return execute('systemctl suspend');
+} else {
+return execute('notify-send "Pack up"');
+}
       } else {
-        setTimeout(doItLikeDeskTime, 60000);
+        return setTimeout(doItLikeDeskTime, 60000);
       }
     });
   });
